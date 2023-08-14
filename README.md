@@ -2,7 +2,7 @@
 Rate limiter for SparkJava
 
 ## Install
-Current version is `1.0`
+Current version is `1.1`
 ```xml
 <dependencies>
     <dependency>
