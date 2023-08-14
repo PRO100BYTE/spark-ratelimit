@@ -1,6 +1,7 @@
 package com.dpkgsoft.spark.ratelimit;
 
 import spark.Request;
+import spark.Service;
 import spark.Spark;
 
 import java.util.HashMap;
@@ -60,6 +61,19 @@ public class RateLimit {
             res.header("X-RateLimit-Reset", String.valueOf(Math.max(0, getTimeLeft())));
 
             if (rateLimited) Spark.halt(429);
+        });
+    }
+
+    public void map(Service service, String path) {
+        service.before(path, (req, res) -> {
+            final Semaphore semaphore = getSemaphore(req);
+            boolean rateLimited = !semaphore.tryAcquire();
+
+            res.header("X-RateLimit-Limit", String.valueOf(maxRequests));
+            res.header("X-RateLimit-Remaining", String.valueOf(semaphore.availablePermits()));
+            res.header("X-RateLimit-Reset", String.valueOf(Math.max(0, getTimeLeft())));
+
+            if (rateLimited) service.halt(429);
         });
     }
 
