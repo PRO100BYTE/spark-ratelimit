@@ -12,3 +12,12 @@ Current version is `1.0`
     </dependency>
 </dependencies>
 ```
+
+### Headers
+```
+X-RateLimit-Limit: 30
+X-RateLimit-Remaining: 29
+X-RateLimit-Reset: 49999
+```
+
+#### [WIP] README IN PROGRESS
